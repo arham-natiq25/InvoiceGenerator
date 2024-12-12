@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\InvoiceGenerateController;
+use Illuminate\Http\Client\Request as ClientRequest;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/home', function () {
+    return view('home');
+});
+
+Route::post('/save-invoice',[InvoiceGenerateController::class,'index'])->name('generate-invoice');
