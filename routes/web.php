@@ -24,3 +24,7 @@ Route::get('/home', function () {
 });
 
 Route::post('/save-invoice',[InvoiceGenerateController::class,'index'])->name('generate-invoice');
+
+Route::get('/print',function (){
+    return view('print');
+});
