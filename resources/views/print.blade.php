@@ -95,7 +95,7 @@
 <div>
     <div class="card">
         <div class="header">
-            <img src="/logo.png" width="130px" alt="Logo">
+            <img src="{{ public_path('logo.png') }}" width="130px" alt="Logo">
             <div class="fw-bolder">
                 NEW HASHIR OIL TRADERS
             </div>
@@ -139,7 +139,7 @@
                     <tr>
                         <th>Qty</th>
                         <th>Product Name</th>
-                        <th>Packing</th>
+                        <th>Litre</th>
                         <th>Single Price</th>
                         <th>Total Price</th>
                     </tr>
@@ -149,7 +149,7 @@
                     <tr>
                         <td>{{$product['qty']}}</td>
                         <td>{{$product['name']}}</td>
-                        <td>{{$product['packing']}}</td>
+                        <td>{{$product['litre']}}</td>
                         <td>{{$product['single_price']}}</td>
                         <td>{{$product['total_price']}}</td>
                     </tr>

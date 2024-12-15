@@ -83,8 +83,8 @@
                                 <input type="text" name="product_name[]" class="form-control">
                             </div>
                             <div class="col-md-1">
-                                <p class="fw-bold">Packing</p>
-                                <input type="text" name="product_packing[]" class="form-control">
+                                <p class="fw-bold">Litre</p>
+                                <input type="text" name="product_litre[]" class="form-control ltr">
                             </div>
                             <div class="col-md-2">
                                 <p class="fw-bold">Single Unit Price</p>
@@ -149,10 +149,11 @@
 
                 document.querySelectorAll('.item-row').forEach(row => {
                     const qty = parseFloat(row.querySelector('.qty').value) || 0;
+                    const totalltr = parseFloat(row.querySelector('.ltr').value) || 0;
                     const unitPrice = parseFloat(row.querySelector('.unit-price').value) || 0;
                     const totalPriceField = row.querySelector('.total-price');
 
-                    const rowTotal = qty * unitPrice;
+                    const rowTotal = (qty * totalltr) * unitPrice;
                     totalPriceField.value = rowTotal.toFixed(2);
 
                     totalUnitPrice += unitPrice;
@@ -177,8 +178,8 @@
                             <input type="text" name="product_name[]" class="form-control">
                         </div>
                       <div class="col-md-1">
-                        <p class="fw-bold">Packing</p>
-                        <input type="text" name="product_packing[]" class="form-control">
+                        <p class="fw-bold">Litre</p>
+                        <input type="text" name="product_litre[]" class="form-control ltr">
                         </div>
                         <div class="col-md-2">
                             <p class="fw-bold">Single Unit Price</p>

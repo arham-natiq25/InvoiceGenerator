@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf; // Import the DOMPDF facade
 
 class InvoiceGenerateController extends Controller
 {
@@ -14,6 +15,7 @@ class InvoiceGenerateController extends Controller
         $product_single_prices = $request->product_single_price;
         $product_total_prices = $request->product_total_price;
         $packings = $request->product_packing;
+        $ltrs = $request->product_litre;
 
         // Initialize the products array
         $products = [];
@@ -23,7 +25,7 @@ class InvoiceGenerateController extends Controller
             $products[] = [
                 'name' => $product_name,
                 'qty' => $qtys[$index],
-                'packing'=>$packings[$index],
+                'litre' => $qtys[$index] * $ltrs[$index],
                 'single_price' => $product_single_prices[$index],
                 'total_price' => $product_total_prices[$index],
             ];
@@ -31,7 +33,7 @@ class InvoiceGenerateController extends Controller
 
         $data = [
             'invoiceNo' => $request->invoice_no,
-            'date' => $date = Carbon::parse($request->date)->format('d F, Y'),
+            'date' => Carbon::parse($request->date)->format('d F, Y'),
             'buyer_name' => $request->buyer_name,
             'buyer_phone' => $request->buyer_phone,
             'buyer_address' => $request->buyer_address,
@@ -39,8 +41,22 @@ class InvoiceGenerateController extends Controller
             'productData' => $products,
         ];
 
+        // Directory for invoices
+        $invoiceDir = public_path('invoices');
 
-        // dd($data);
-        return view('print',compact('data'));
+        // Check if directory exists, otherwise create it
+        if (!is_dir($invoiceDir)) {
+            mkdir($invoiceDir, 0777, true); // Create the directory with recursive option
+        }
+
+        // Generate PDF from view
+        $pdf = Pdf::loadView('print', compact('data'));
+
+        // Save PDF to public/invoices
+        $pdfFilePath = $invoiceDir . "/{$data['invoiceNo']}.pdf";
+        $pdf->save($pdfFilePath);
+
+        // Download the PDF file
+        return $pdf->download("Invoice-{$data['invoiceNo']}.pdf");
     }
 }
