@@ -100,11 +100,11 @@
                 NEW HASHIR OIL TRADERS
             </div>
             <div class="fw-bolder">
-                Qaim Sain Darbar Road, Faizabad, Faisalabad Street No 11.
+                Qaim Sain Darbar Road Street No 11 , Faizabad, Faisalabad .
             </div>
             <!-- Contact Info positioned absolutely to the top-right -->
             <div class="contact-info">
-                <p>Name :<strong>Sajjad Servar</strong></p>
+                <p>Name :<strong>Sajjad Sarwar</strong></p>
                 <p>Contact: <strong>03006356783</strong> </p>
                 <p>Contact: <strong>03268668282</strong> </p>
             </div>
@@ -169,8 +169,9 @@
         <br>
         <div class="signature">
             <p class="lg-size"> <strong>Signature :</strong> <span>_________________________
-            <br> <span class="end-name"> NEW HASHIR OIL</span>
-            </span> </p>
+            {{-- <br> <span class="end-name"> NEW HASHIR OIL</span> --}}
+            {{-- </span>  --}}
+        </p>
         </div>
     </div>
 </div>

@@ -78,13 +78,17 @@
                                 <input type="text" name="qty[]" class="form-control qty" min="1"
                                     value="1">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <p class="fw-bold">Product Name</p>
                                 <input type="text" name="product_name[]" class="form-control">
                             </div>
                             <div class="col-md-1">
-                                <p class="fw-bold">Litre</p>
+                                <p class="fw-bold">Per Litre</p>
                                 <input type="text" name="product_litre[]" class="form-control ltr">
+                            </div>
+                            <div class="col-md-1">
+                                <p class="fw-bold">Total Litre</p>
+                                <input type="text" name="total_ltr[]" readonly class="form-control ttl-ltr">
                             </div>
                             <div class="col-md-2">
                                 <p class="fw-bold">Single Unit Price</p>
@@ -109,12 +113,12 @@
                         <div class="col-md-3"></div>
                         <div class="col-md-2">
                             <p class="fw-bold">Total</p>
-                            <input type="text" id="sum-product-single-price" name="sum_product_single_price"
-                                class="form-control" readonly value="0">
+                            <input type="text" readonly id="sum-product-single-price"
+                                name="sum_product_single_price" class="form-control" readonly value="0">
                         </div>
                         <div class="col-md-2">
                             <p class="fw-bold">Complete Total</p>
-                            <input type="text" id="sum-of-total-price" name="sum_of_total_price"
+                            <input type="text" readonly id="sum-of-total-price" name="sum_of_total_price"
                                 class="form-control" readonly value="0">
                         </div>
                         <div class="col-md-2">
@@ -142,84 +146,62 @@
             const sumProductSinglePrice = document.getElementById('sum-product-single-price');
             const sumOfTotalPrice = document.getElementById('sum-of-total-price');
 
-            // Function to calculate totals
             const calculateTotals = () => {
                 let totalUnitPrice = 0;
-                let totalPrice = 0;
+                let grandTotal = 0;
 
                 document.querySelectorAll('.item-row').forEach(row => {
                     const qty = parseFloat(row.querySelector('.qty').value) || 0;
-                    const totalltr = parseFloat(row.querySelector('.ltr').value) || 0;
+                    const perLitre = parseFloat(row.querySelector('.ltr').value) || 0;
                     const unitPrice = parseFloat(row.querySelector('.unit-price').value) || 0;
+                    const totalLtrField = row.querySelector('.ttl-ltr');
                     const totalPriceField = row.querySelector('.total-price');
 
-                    const rowTotal = (qty * totalltr) * unitPrice;
-                    totalPriceField.value = rowTotal.toFixed(2);
+                    const totalLitres = qty * perLitre;
+                    const totalPrice = totalLitres * unitPrice;
+
+                    totalLtrField.value = totalLitres.toFixed(2);
+                    totalPriceField.value = totalPrice.toFixed(2);
 
                     totalUnitPrice += unitPrice;
-                    totalPrice += rowTotal;
+                    grandTotal += totalPrice;
                 });
 
                 sumProductSinglePrice.value = totalUnitPrice.toFixed(2);
-                sumOfTotalPrice.value = totalPrice.toFixed(2);
+                sumOfTotalPrice.value = grandTotal.toFixed(2);
             };
 
-            // Add item row
             addItemButton.addEventListener('click', () => {
                 const itemRow = document.createElement('div');
                 itemRow.classList.add('row', 'item-row', 'mb-3');
-                itemRow.innerHTML = `
-                        <div class="col-md-1">
-                            <p class="fw-bold">Qty</p>
-                            <input type="text" name="qty[]" class="form-control qty" min="1" value="1">
-                        </div>
-                        <div class="col-md-4">
-                            <p class="fw-bold">Product Name</p>
-                            <input type="text" name="product_name[]" class="form-control">
-                        </div>
-                      <div class="col-md-1">
-                        <p class="fw-bold">Litre</p>
-                        <input type="text" name="product_litre[]" class="form-control ltr">
-                        </div>
-                        <div class="col-md-2">
-                            <p class="fw-bold">Single Unit Price</p>
-                            <input type="text" name="product_single_price[]" class="form-control unit-price" min="0" value="0">
-                        </div>
-                        <div class="col-md-2">
-                            <p class="fw-bold">Total Price</p>
-                            <input type="text" name="product_total_price[]" class="form-control total-price" readonly value="0">
-                        </div>
-                        <div class="col-md-2 d-flex align-items-end">
-                            <button type="button" class="btn btn-danger btn-sm remove-item">Remove</button>
-                        </div>
-                    `;
+                itemRow.innerHTML = document.querySelector('.item-row').innerHTML;
                 itemsContainer.appendChild(itemRow);
             });
 
-            // Remove item row
+            itemsContainer.addEventListener('input', (event) => {
+                if (['qty', 'ltr', 'unit-price'].some(cls => event.target.classList.contains(cls))) {
+                    calculateTotals();
+                }
+            });
+
             itemsContainer.addEventListener('click', (event) => {
                 if (event.target.classList.contains('remove-item')) {
-                    event.target.closest('.item-row').remove();
-                    calculateTotals();
+                    const itemRows = document.querySelectorAll('.item-row');
+                    if (itemRows.length > 1) { // Only remove if there's more than one row
+                        event.target.closest('.item-row').remove();
+                        calculateTotals();
+                    } else {
+                        alert("At least one row is required.");
+                    }
                 }
             });
 
-            // Recalculate on input changes
-            itemsContainer.addEventListener('input', (event) => {
-                if (event.target.classList.contains('qty') || event.target.classList.contains(
-                    'unit-price')) {
-                    calculateTotals();
-                }
-            });
-
-            // Clear form
             clearFormButton.addEventListener('click', () => {
                 document.getElementById('invoice-form').reset();
-                itemsContainer.innerHTML = '';
+                itemsContainer.innerHTML = document.querySelector('.item-row').outerHTML;
                 calculateTotals();
             });
 
-            // Initial calculation
             calculateTotals();
         });
     </script>
