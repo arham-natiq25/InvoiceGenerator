@@ -53,8 +53,8 @@ class InvoiceGenerateController extends Controller
         $pdf = Pdf::loadView('print', compact('data'));
 
         // Save PDF to public/invoices
-        $pdfFilePath = $invoiceDir . "/{$data['invoiceNo']}.pdf";
-        $pdf->save($pdfFilePath);
+        // $pdfFilePath = $invoiceDir . "/{$data['invoiceNo']}.pdf";
+        // $pdf->save($pdfFilePath);
 
         // Download the PDF file
         return $pdf->download("Invoice-{$data['invoiceNo']}.pdf");

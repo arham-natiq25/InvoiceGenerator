@@ -11,14 +11,107 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
     <style>
-        /* For modern browsers */
-        input[type="number"] {
-            -moz-appearance: textfield;
-            /* Firefox */
-            -webkit-appearance: none;
-            /* Safari and Chrome */
-            appearance: none;
-            /* Standard */
+          body {
+            background-color: #f4f4f9;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(to bottom right, #ffffff, #f9f9fc);
+        }
+
+        .card-header {
+            background-color: #6c757d;
+            color: white;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            text-align: center;
+            padding: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .form-control {
+            border: 2px solid #ced4da;
+            border-radius: 10px;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 5px rgba(33, 37, 41, 0.3);
+        }
+
+        .btn {
+            border-radius: 25px;
+            padding: 0.6rem 1.2rem;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(to right, #2575fc, #6a11cb);
+        }
+
+        .btn-danger {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+        }
+
+        .btn-success {
+            background: linear-gradient(to right, #00b09b, #96c93d);
+            color: white;
+            border: none;
+        }
+
+        .btn-warning {
+            background: linear-gradient(to right, #f7971e, #ffd200);
+            color: white;
+            border: none;
+        }
+
+        .fw-bold {
+            font-weight: 600;
+            color: #333;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        .text-danger {
+            text-shadow: 1px 1px 2px #d9534f;
+        }
+
+        .item-row {
+            background: #f7f9fb;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .remove-item {
+            margin-top: 1.7rem;
+        }
+
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .logo {
+            width: 100px;
+            margin-bottom: 1rem;
         }
     </style>
 </head>
@@ -26,14 +119,10 @@
 <body>
     <div class="d-flex justify-content-center mt-3">
         <div class="card " style="width: 80%; border: 5px solid black">
-            <div class="text-center">
-                <img src="/logo.png" width="80px" class="img-fluid" alt="">
-                <div class="fw-bolder">
-                    NEW HASHIR OIL TRADERS
-                </div>
-                <div class="fw-bold">
-                    Qaim Sain Darbar Road,Street No 11 Faizabad , Faisalabad .
-                </div>
+            <div class="card-header">
+                <img src="/logo.png" class="img-fluid logo" alt="Company Logo">
+                <div class="header-title">NEW HASHIR OIL TRADERS</div>
+                <small>Qaim Sain Darbar Road, Street No 11 Faizabad, Faisalabad</small>
             </div>
             <div class="card-body">
                 <form id="invoice-form" method="POST" action="{{ route('generate-invoice') }}">
@@ -41,29 +130,26 @@
                     <div class="row">
                         <div class="col-md-2">
                             <p class="fw-bold">Invoice No :</p>
-                            <input type="text" name="invoice_no" style="border-bottom: 2px solid black"
-                                class="form-control">
+                            <input type="text" name="invoice_no" class="form-control">
                         </div>
                         <div class="col-md-3">
                             <p class="fw-bold">Date</p>
-                            <input type="date" name="date" style="border-bottom: 2px solid black"
-                                class="form-control">
+                            <input type="date" name="date" class="form-control">
                         </div>
                         <div class="col-md-4">
                             <p class="fw-bold">Buyer's Name</p>
-                            <input type="text" name="buyer_name" style="border-bottom: 2px solid black"
-                                class="form-control">
+                            <input type="text" name="buyer_name" class="form-control">
                         </div>
                         <div class="col-md-3">
                             <p class="fw-bold">Buyer's Phone</p>
-                            <input type="text" name="buyer_phone" style="border-bottom: 2px solid black"
-                                class="form-control">
+                            <input type="text" name="buyer_phone" class="form-control">
                         </div>
-                        <div class="col-md-12 mt-2">
+                        <div class="col-md-12 mt-3">
                             <p class="fw-bold">Buyer's Address</p>
-                            <textarea name="buyer_address" style="border-bottom: 2px solid black" class="form-control"></textarea>
+                            <textarea name="buyer_address" rows="3" class="form-control"></textarea>
                         </div>
                     </div>
+
 
                     <div class="text-center">
                         <div class="h4 text-danger mt-4 fw-bolder">
@@ -80,14 +166,41 @@
                             </div>
                             <div class="col-md-3">
                                 <p class="fw-bold">Product Name</p>
-                                <input type="text" name="product_name[]" class="form-control">
+                                <select name="product_name[]" class="form-control">
+                                    <option selected value="">Select</option>
+                                    <option value="HYDROIL AW 100">HYDROIL AW 100</option>
+                                    <option value="HYDROIL AW 68">HYDROIL AW 68</option>
+                                    <option value="HYDROIL AW 46">HYDROIL AW 46</option>
+                                    <option value="HYDROIL AW 32">HYDROIL AW 32</option>
+                                    <option value="CIRCUOIL G 220">CIRCUOIL G 220</option>
+                                    <option value="CIRCUOIL G 100">CIRCUOIL G 100</option>
+                                    <option value="CIRCUOIL G 68">CIRCUOIL G 68</option>
+                                    <option value="CIRCUOIL G 10">CIRCUOIL G 10</option>
+                                    <option value="CHILL OIL 68">CHILL OIL 68</option>
+                                    <option value="SPINDLE OIL 10">SPINDLE OIL 10</option>
+                                    <option value="LOOM OIL">LOOM OIL</option>
+                                    <option value="DEO (SAE-30-CD)">DEO (SAE-30-CD)</option>
+                                    <option value="DEO (SAE-50-CD)">DEO (SAE-50-CD)</option>
+                                    <option value="DEO (15W-40-CI-4) Gold">DEO (15W-40-CI-4) Gold</option>
+                                    <option value="DEO (20W-50-CF 4)">DEO (20W-50-CF 4)</option>
+                                    <option value="OEM (20W40-SG) S">OEM (20W40-SG) S</option>
+                                    <option value="TRANSMISSION OIL (85W-140)">TRANSMISSION OIL (85W-140)</option>
+                                    <option value="NEAT CUT I">NEAT CUT I</option>
+                                    <option value="NEAT CUT II">NEAT CUT II</option>
+                                    <option value="SMART CUT">SMART CUT</option>
+                                    <option value="ANTI RUST OIL VG - 32">ANTI RUST OIL VG - 32</option>
+                                    <option value="GEAR OIL EP-320">GEAR OIL EP-320</option>
+
+
+
+                                </select>
                             </div>
                             <div class="col-md-1">
                                 <p class="fw-bold">Per Litre</p>
                                 <input type="text" name="product_litre[]" class="form-control ltr">
                             </div>
                             <div class="col-md-1">
-                                <p class="fw-bold">Total Litre</p>
+                                <p class="fw-bold">Total Ltr</p>
                                 <input type="text" name="total_ltr[]" readonly class="form-control ttl-ltr">
                             </div>
                             <div class="col-md-2">
